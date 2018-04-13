@@ -89,23 +89,30 @@
     <a id="skip_warning" href="#"> GOT IT </a>
   </div>
   <script>
-    var skipBtn = document.getElementById('skip_warning');
-    var warning = document.getElementById('mobile-warning');
-    if (document.cookie.indexOf('skip_mobile_warning=true') > -1) {
-      warning.classList.add('hidden');
-    } else {
-      var handler = function() {
-        warning.classList.add('hidden');
-        document.cookie = "skip_mobile_warning=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
-      }
-      skipBtn.addEventListener('touchstart', handler, false);
-      skipBtn.addEventListener('click', handler, false);
+    function introspectionProvider(introspectionQuery) {
+      return fetch('http://localhost:4000/api', {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({query: introspectionQuery}),
+        credentials: 'include',
+      }).then(function (response) {
+        return response.text();
+      }).then(function (responseBody) {
+        try {
+          return JSON.parse(responseBody);
+        } catch (error) {
+          return responseBody;
+        }
+      });
     }
 
     window.addEventListener("load", function(event) {
       GraphQLVoyager.init(document.getElementById('panel_root'), {
         _schemaPresets: window.VOYAGER_PRESETS,
-        introspection: false
+        introspection: introspectionProvider
       });
     })
   </script>
