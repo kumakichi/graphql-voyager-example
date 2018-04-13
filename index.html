@@ -78,7 +78,7 @@
   <script src="js/react.js"></script>
   <script src="js/react-dom.js"></script>
 <link href="main.css" rel="stylesheet"></head>
-<body>
+<body onload="remove_nag();">
   <main id="panel_root">
     <h1 style="text-align: center; color: #5d7e86;"> Loading... </h1>
   </main>
@@ -89,6 +89,16 @@
     <a id="skip_warning" href="#"> GOT IT </a>
   </div>
   <script>
+    function remove_nag() {
+        setTimeout(function(){
+        var c=document.querySelector('.ReactModal__Content button');
+        if (c == null) {
+            setTimeout(remove_nag, 200);
+        }
+        c.click();
+      }, 200);
+    }
+
     function introspectionProvider(introspectionQuery) {
       return fetch('http://localhost:4000/api', {
         method: 'post',
