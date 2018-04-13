@@ -1,0 +1,40 @@
+* About
+  According to [[https://github.com/APIs-guru/graphql-voyager/issues/15][#15]] and [[https://github.com/APIs-guru/graphql-voyager/issues/32][#32]], currently, by default, we can not change Root.
+
+  So, I retrive https://apis.guru/graphql-voyager/, do some works like static files local storage, block pre-defined cards infomation.
+
+  All you need to do is just modifying one line code, to point to your GraphQL server.
+
+* How to use
+  
+  Quite simple.
+
+  
+** Put the files under a web server
+
+   You can use nginx, apache, or just enter the root directory and type something like 
+
+   #+BEGIN_SRC python
+     python -m SimpleHTTPServer 8000
+   #+END_SRC
+
+   I use Golang:
+
+   #+BEGIN_SRC go
+     package main
+
+     import "net/http"
+
+     func main() {
+         handler := http.FileServer(http.Dir("."))
+         http.ListenAndServe(":8000", handler)
+     }
+   #+END_SRC
+
+** modify index.html
+
+   Modify [[https://github.com/kumakichi/graphql-voyager-example/blob/947cc8f3ca19ccc824f7c0a744c67e425137cc15/index.html#L103][Line 103]] , point to your GraphQL server.
+
+** done
+
+   Open http://localhost:8000.
